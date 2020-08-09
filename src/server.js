@@ -46,8 +46,7 @@ const weekdays = [
     "Sexta-feira",
     "Sábado",
 ]
-
-// Funções
+/* Funções */
 function getSubject(subjectNumber) {
     const arrayPosition = +subjectNumber-1;
     return subjects[arrayPosition];
@@ -65,37 +64,37 @@ function pageStudy(req, res) {
 function pageGiveClasses(req, res) {
     const data = req.query
     
-    // Verificar se tem dados
+    /* Verificando se array está vazio */
     const isNotEmpty = Object.keys(data).length > 0;
     if (isNotEmpty) {
         data.subject = getSubject(data.subject);
-        // Adicionar dados ao lista de proffys
+        /* Adicionando os dados validos na lista */
         proffys.push(data);
 
         return res.redirect("/study");
     }
-    // Caso não tenha dados, mostrar a página novamente
+    /* Caso não, retornando a mesma página */
     return res.render("give-classes.html", { subjects, weekdays });
 }
 
-// Servidor
+/* Configurações de servidor */
 const express = require("express");
 const nunjucks = require("nunjucks");
 const server = express();
 
-// Configurar Nunjucks (Template Engine)
+/* Configurações do Nunjucks (Template Engine) */
 nunjucks.configure("src/views", {
     express: server,
     noCache: true,
 });
 
-// Inicio e configuração do servidor
+/* Início config server */
 server
-// Configurar arquivos estáticos (css, scripts, imagens)
+/* Configurações de arquivos estáticos (html, css, js) */
 .use(express.static("public"))
-// Rotas da aplicação
+/* Rotas */
 .get("/", pageLanding)
 .get("/study", pageStudy)
 .get("/give-classes", pageGiveClasses)
-// Iniciar o servidor
+/* Startando o server */
 .listen(5500);
